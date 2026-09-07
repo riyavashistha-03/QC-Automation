@@ -1,0 +1,8 @@
+2026-09-07 17:21:10 [INFO] osa_qc.engine: Starting QC for 3 rows on onemg (concurrency=1)
+2026-09-07 17:21:11 [WARNING] osa_qc.engine: Retry 1/3 for https://www.1mg.com/otc/ensure-high-protein-drink-for-physically-active-adults-powder-chocolate-otc1048720 in 5.0s
+2026-09-07 17:21:16 [WARNING] osa_qc.engine: Retry 2/3 for https://www.1mg.com/otc/ensure-high-protein-drink-for-physically-active-adults-powder-chocolate-otc1048720 in 10.0s
+2026-09-07 17:21:28 [WARNING] osa_qc.engine: Retry 1/3 for https://www.1mg.com/otc/nestle-cerelac-baby-food-cereal-from-6-to-24-months-source-of-iron-protein-no-preservatives-wheat-apple-cherry-no-refined-sugar-otc1163839 in 5.0s
+2026-09-07 17:21:33 [WARNING] osa_qc.engine: Retry 2/3 for https://www.1mg.com/otc/nestle-cerelac-baby-food-cereal-from-6-to-24-months-source-of-iron-protein-no-preservatives-wheat-apple-cherry-no-refined-sugar-otc1163839 in 10.0s
+2026-09-07 17:21:45 [WARNING] osa_qc.engine: Retry 1/3 for https://www.1mg.com/otc/nestle-cerelac-baby-cereal-with-milk-from-8-to-24-months-rich-in-iron-omega-3-iron-protein-calcium-for-babies-instant-infant-cereal-no-preservatives-rice-vegetables-otc1163848 in 5.0s
+2026-09-07 17:21:50 [WARNING] osa_qc.engine: Retry 2/3 for https://www.1mg.com/otc/nestle-cerelac-baby-cereal-with-milk-from-8-to-24-months-rich-in-iron-omega-3-iron-protein-calcium-for-babies-instant-infant-cereal-no-preservatives-rice-vegetables-otc1163848 in 10.0s
+2026-09-07 17:22:02 [INFO] osa_qc.engine: QC complete: 2 mismatches out of 3 rows

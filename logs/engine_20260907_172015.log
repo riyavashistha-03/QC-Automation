@@ -1,0 +1,3 @@
+2026-09-07 17:20:15 [INFO] osa_qc.engine: Starting QC for 3 rows on onemg (concurrency=3)
+2026-09-07 17:20:17 [WARNING] osa_qc.engine: Retry 1/3 for https://www.1mg.com/otc/nestle-cerelac-baby-food-cereal-from-6-to-24-months-source-of-iron-protein-no-preservatives-wheat-apple-cherry-no-refined-sugar-otc1163839 in 1.5s
+2026-09-07 17:20:17 [WARNING] osa_qc.engine: Retry 1/3 for https://www.1mg.com/otc/ensure-high-protein-drink-for-physically-active-adults-powder-chocolate-otc1048720 in 1.5s

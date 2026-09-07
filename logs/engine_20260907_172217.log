@@ -1,0 +1,2 @@
+2026-09-07 17:22:17 [INFO] osa_qc.engine: Starting QC for 3 rows on onemg (concurrency=1)
+2026-09-07 17:22:24 [INFO] osa_qc.engine: QC complete: 1 mismatches out of 3 rows
