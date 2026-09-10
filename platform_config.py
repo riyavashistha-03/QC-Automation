@@ -1,5 +1,6 @@
 """
-Platform Configuration — Config-driven column mapping and location settings per platform.
+Platform Configuration — Config-driven column mapping, field comparison mapping,
+and location settings per platform.
 
 To add a new platform:
 1. Add an entry to PLATFORM_CONFIG below
@@ -8,6 +9,8 @@ To add a new platform:
 
 IMPORTANT: Replace placeholder column names with your actual MySQL column names.
 """
+
+from utils import normalize_price as _normalize_price
 
 # Canonical status values used internally
 STATUS_IN_STOCK = "In Stock"
@@ -49,6 +52,13 @@ PLATFORM_CONFIG = {
             "osa_remark": "osa_remark",          # PLACEHOLDER
             "product_name": "product_name",      # PLACEHOLDER (optional)
         },
+        # Maps input column names → scraper field keys for multi-field comparison.
+        # Only columns present in BOTH the input data AND this mapping get compared.
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
         "scraper_module": "scrapers.blinkit",
         "scraper_class": "BlinkitScraper",
         "location_type": "lat_long",            # "pincode", "lat_long", or "cookie"
@@ -72,6 +82,11 @@ PLATFORM_CONFIG = {
             "location_id": "location_id",
             "osa_remark": "osa_remark",
         },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
         "scraper_module": "scrapers.flipkart",
         "scraper_class": "FlipkartScraper",
         "location_type": "pincode",
@@ -93,6 +108,11 @@ PLATFORM_CONFIG = {
             "location_id": "location_id",
             "osa_remark": "osa_remark",
             "product_name": "product_name",      # PLACEHOLDER
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
         },
         "scraper_module": "scrapers.onemg",
         "scraper_class": "OneMgScraper",
@@ -133,6 +153,19 @@ def get_column_mapping(platform: str) -> dict[str, str]:
     return get_platform_config(platform)["columns"]
 
 
+def get_field_mapping(platform: str) -> dict[str, str]:
+    """
+    Get the field comparison mapping for a platform.
+
+    Returns a dict mapping input column names to scraper field keys.
+    Example: {"osa_remark": "stock_status", "mrp": "price", "product_name": "product_name"}
+
+    Only columns that exist in BOTH the input data AND this mapping will be compared.
+    """
+    config = get_platform_config(platform)
+    return config.get("field_mapping", {"osa_remark": "stock_status"})
+
+
 def get_location_value(platform: str, location_id: str):
     """
     Get the platform-specific location value for a location_id.
@@ -152,3 +185,11 @@ def normalize_osa_status(raw_text: str) -> str:
         return STATUS_NOT_AVAILABLE
     cleaned = raw_text.strip().lower()
     return STATUS_SYNONYMS.get(cleaned, raw_text.strip().title())
+
+
+def normalize_price(raw: str) -> float | None:
+    """
+    Normalize a price string to a float for comparison.
+    Delegates to utils.normalize_price.
+    """
+    return _normalize_price(raw)

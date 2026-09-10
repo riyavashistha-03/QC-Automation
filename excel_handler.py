@@ -1,5 +1,10 @@
 """
 Excel Handler — Upload parsing and formatted report generation.
+
+Enhanced with:
+- Sample info sheet when random sampling is used
+- Multi-mismatch Remark column support
+- Location/Pincode columns in reports
 """
 
 import io
@@ -85,6 +90,7 @@ ERROR_FILL = PatternFill(start_color="F4CCCC", end_color="F4CCCC", fill_type="so
 IN_STOCK_FONT = Font(name="Calibri", color="38761D", bold=True)
 OOS_FONT = Font(name="Calibri", color="CC0000", bold=True)
 CELL_FONT = Font(name="Calibri", size=10)
+INFO_FONT = Font(name="Calibri", size=11, bold=True, color="2F5496")
 THIN_BORDER = Border(
     left=Side(style="thin", color="D0D0D0"),
     right=Side(style="thin", color="D0D0D0"),
@@ -96,6 +102,7 @@ THIN_BORDER = Border(
 def generate_report(
     results: dict[str, pd.DataFrame],
     include_summary: bool = True,
+    sample_info: dict | None = None,
 ) -> io.BytesIO:
     """
     Generate a formatted Excel report from QC mismatch results.
@@ -104,6 +111,9 @@ def generate_report(
         results: Dict mapping platform names to DataFrames of mismatched rows.
                  Each DataFrame should have 'Actual_Status' and 'Remark' columns.
         include_summary: If True and multiple platforms, add a combined summary sheet.
+        sample_info: Optional dict with sampling metadata:
+                     {"is_sample": True, "sample_size": 50, "total_available": 800,
+                      "sampled_skus": [...]}
 
     Returns:
         BytesIO buffer containing the .xlsx file, ready for download.
@@ -114,6 +124,10 @@ def generate_report(
     # Remove default sheet
     if "Sheet" in wb.sheetnames:
         del wb["Sheet"]
+
+    # Add sample info sheet if applicable
+    if sample_info and sample_info.get("is_sample"):
+        _write_sample_info_sheet(wb, sample_info)
 
     # If multiple platforms and summary requested, create combined sheet first
     if include_summary and len(results) > 1:
@@ -128,7 +142,7 @@ def generate_report(
 
         if all_mismatches:
             combined = pd.concat(all_mismatches, ignore_index=True)
-            _write_sheet(wb, "All Mismatches", combined)
+            _write_sheet(wb, "All Mismatches", combined, sample_info=sample_info)
 
     # One sheet per platform
     for platform, df in results.items():
@@ -141,8 +155,14 @@ def generate_report(
             ws = wb.create_sheet(title=sheet_name)
             ws["A1"] = "No mismatches found"
             ws["A1"].font = Font(name="Calibri", size=12, bold=True, color="38761D")
+            if sample_info and sample_info.get("is_sample"):
+                ws["A2"] = (
+                    f"Sample run: {sample_info['sample_size']} of "
+                    f"{sample_info['total_available']} SKUs randomly selected"
+                )
+                ws["A2"].font = INFO_FONT
         else:
-            _write_sheet(wb, sheet_name, df)
+            _write_sheet(wb, sheet_name, df, sample_info=sample_info)
 
     # If no sheets were created (empty results), add a placeholder
     if not wb.sheetnames:
@@ -156,20 +176,77 @@ def generate_report(
     return output
 
 
-def _write_sheet(wb: Workbook, sheet_name: str, df: pd.DataFrame) -> None:
+def _write_sample_info_sheet(wb: Workbook, sample_info: dict) -> None:
+    """Write a 'Sample Info' sheet with sampling metadata and SKU list."""
+    ws = wb.create_sheet(title="Sample Info")
+
+    # Header
+    ws["A1"] = "QC Sample Run Information"
+    ws["A1"].font = Font(name="Calibri", size=14, bold=True, color="2F5496")
+    ws.merge_cells("A1:C1")
+
+    # Metadata
+    ws["A3"] = "Run Type:"
+    ws["B3"] = "Random Sample"
+    ws["A4"] = "Sample Size:"
+    ws["B4"] = sample_info.get("sample_size", "N/A")
+    ws["A5"] = "Total Available SKUs:"
+    ws["B5"] = sample_info.get("total_available", "N/A")
+    ws["A6"] = "Sampling Rate:"
+    total = sample_info.get("total_available", 0)
+    size = sample_info.get("sample_size", 0)
+    ws["B6"] = f"{(size / total * 100):.1f}%" if total > 0 else "N/A"
+    ws["A7"] = "Generated At:"
+    ws["B7"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    for row in range(3, 8):
+        ws.cell(row=row, column=1).font = Font(name="Calibri", bold=True, size=11)
+        ws.cell(row=row, column=2).font = CELL_FONT
+
+    # List of sampled SKUs
+    sampled_skus = sample_info.get("sampled_skus", [])
+    if sampled_skus:
+        ws["A9"] = "Sampled SKU IDs:"
+        ws["A9"].font = Font(name="Calibri", bold=True, size=11)
+
+        for i, sku in enumerate(sampled_skus):
+            ws.cell(row=10 + i, column=1, value=str(sku)).font = CELL_FONT
+
+    # Auto-fit columns
+    ws.column_dimensions["A"].width = 25
+    ws.column_dimensions["B"].width = 30
+
+
+def _write_sheet(
+    wb: Workbook,
+    sheet_name: str,
+    df: pd.DataFrame,
+    sample_info: dict | None = None,
+) -> None:
     """Write a DataFrame to a formatted worksheet."""
     ws = wb.create_sheet(title=sheet_name)
+    start_row = 1
+
+    # Add sample run note at the top if applicable
+    if sample_info and sample_info.get("is_sample"):
+        ws["A1"] = (
+            f"⚠ Sample run: {sample_info['sample_size']} of "
+            f"{sample_info['total_available']} SKUs randomly selected"
+        )
+        ws["A1"].font = INFO_FONT
+        ws.merge_cells(f"A1:{get_column_letter(max(len(df.columns), 3))}1")
+        start_row = 3  # Leave a gap before the data
 
     # Write headers
     for col_idx, col_name in enumerate(df.columns, start=1):
-        cell = ws.cell(row=1, column=col_idx, value=str(col_name))
+        cell = ws.cell(row=start_row, column=col_idx, value=str(col_name))
         cell.fill = HEADER_FILL
         cell.font = HEADER_FONT
         cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         cell.border = THIN_BORDER
 
     # Write data rows
-    for row_idx, (_, row) in enumerate(df.iterrows(), start=2):
+    for row_idx, (_, row) in enumerate(df.iterrows(), start=start_row + 1):
         for col_idx, (col_name, value) in enumerate(row.items(), start=1):
             cell = ws.cell(row=row_idx, column=col_idx, value=value)
             cell.font = CELL_FONT
@@ -178,9 +255,10 @@ def _write_sheet(wb: Workbook, sheet_name: str, df: pd.DataFrame) -> None:
 
             # Color-code the Remark column
             if col_name == "Remark":
-                if "could not verify" in str(value).lower() or "error" in str(value).lower():
+                val_str = str(value).lower()
+                if "page unavailable" in val_str or "invalid" in val_str:
                     cell.fill = ERROR_FILL
-                else:
+                elif "mismatch" in val_str:
                     cell.fill = MISMATCH_FILL
 
             # Color-code status columns
@@ -196,7 +274,7 @@ def _write_sheet(wb: Workbook, sheet_name: str, df: pd.DataFrame) -> None:
         col_letter = get_column_letter(col_idx)
         max_width = len(str(df.columns[col_idx - 1])) + 2
 
-        for row_idx in range(2, min(len(df) + 2, 102)):  # Sample first 100 rows
+        for row_idx in range(start_row + 1, min(len(df) + start_row + 1, start_row + 102)):
             cell_value = ws.cell(row=row_idx, column=col_idx).value
             if cell_value:
                 max_width = max(max_width, min(len(str(cell_value)), 50))
@@ -204,7 +282,7 @@ def _write_sheet(wb: Workbook, sheet_name: str, df: pd.DataFrame) -> None:
         ws.column_dimensions[col_letter].width = max_width + 2
 
     # Freeze header row
-    ws.freeze_panes = "A2"
+    ws.freeze_panes = f"A{start_row + 1}"
 
     # Auto-filter
     ws.auto_filter.ref = ws.dimensions

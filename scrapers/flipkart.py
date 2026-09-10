@@ -3,17 +3,19 @@ Flipkart Scraper — Checks product stock availability on flipkart.com.
 
 Location setting: Pincode-based (entered via the delivery check input on the product page).
 Stock detection: Looks for delivery availability text vs "Currently Unavailable".
+Multi-field extraction: stock status, price, product name.
 
 This is a SKELETON implementation. The selectors need calibration with real Flipkart URLs.
 """
 
 import asyncio
+import re
 from playwright.async_api import async_playwright, Page, BrowserContext, Browser
 
-from scrapers.base import BaseScraper, StockResult
+from scrapers.base import BaseScraper, StockResult, classify_user_facing_error
 from platform_config import STATUS_IN_STOCK, STATUS_OUT_OF_STOCK, STATUS_NOT_AVAILABLE, STATUS_ERROR
 from utils import (
-    get_random_user_agent,
+    get_rotating_user_agent,
     get_stealth_browser_args,
     get_stealth_context_options,
     apply_stealth_scripts,
@@ -29,7 +31,6 @@ class FlipkartScraper(BaseScraper):
         self._playwright = None
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
-        self._page: Page | None = None
         self._pincode: str | None = None
 
     async def initialize(self, location_value) -> None:
@@ -49,12 +50,9 @@ class FlipkartScraper(BaseScraper):
             args=get_stealth_browser_args(),
         )
 
-        ua = get_random_user_agent()
+        ua = get_rotating_user_agent()
         context_opts = get_stealth_context_options(ua)
         self._context = await self._browser.new_context(**context_opts)
-        self._page = await self._context.new_page()
-
-        await apply_stealth_scripts(self._page)
 
         # Block heavy resources
         await self._context.route(
@@ -101,17 +99,75 @@ class FlipkartScraper(BaseScraper):
         except Exception as e:
             self.logger.debug(f"Could not enter pincode: {e}")
 
+    async def _extract_price(self, page: Page) -> str | None:
+        """Extract the product price from the page."""
+        try:
+            price_selectors = [
+                "div[class*='_30jeq3']",  # Flipkart common price class
+                "div[class*='_16Jk6d']",  # MRP class
+                "[class*='price'] div",
+                "[class*='Price']",
+            ]
+            for selector in price_selectors:
+                el = page.locator(selector).first
+                try:
+                    if await el.is_visible(timeout=1000):
+                        text = await el.text_content()
+                        if text and re.search(r'\d', text):
+                            return text.strip()
+                except Exception:
+                    continue
+
+            # Fallback: regex in page text
+            page_text = await page.text_content("body") or ""
+            price_match = re.search(r'₹\s*[\d,]+(?:\.\d{1,2})?', page_text)
+            if price_match:
+                return price_match.group(0).strip()
+        except Exception as e:
+            self.logger.debug(f"Could not extract price: {e}")
+        return None
+
+    async def _extract_product_name(self, page: Page) -> str | None:
+        """Extract the product name from the page."""
+        try:
+            name_selectors = [
+                "span[class*='B_NuCI']",  # Flipkart product title class
+                "h1[class*='yhB1nd']",
+                "h1",
+                "span[class*='_35KyD6']",
+            ]
+            for selector in name_selectors:
+                el = page.locator(selector).first
+                try:
+                    if await el.is_visible(timeout=1000):
+                        text = await el.text_content()
+                        if text and len(text.strip()) > 2:
+                            return text.strip()
+                except Exception:
+                    continue
+        except Exception as e:
+            self.logger.debug(f"Could not extract product name: {e}")
+        return None
+
     async def check_stock(self, url: str) -> StockResult:
         """
         Visit a Flipkart product page and determine stock availability.
+        Extracts price and product name in addition to stock status.
 
         SKELETON — selectors need calibration with real URLs.
         """
-        if not self._initialized or not self._page:
+        if not self._initialized or not self._context:
             return self._make_error_result("Scraper not initialized", url)
 
+        # Create a fresh page per request to avoid stale sessions
+        page = await self._context.new_page()
         try:
-            response = await self._page.goto(url, wait_until="domcontentloaded", timeout=30000)
+            # Rotate UA per request
+            ua = get_rotating_user_agent()
+            await page.set_extra_http_headers({"User-Agent": ua})
+            await apply_stealth_scripts(page)
+
+            response = await page.goto(url, wait_until="domcontentloaded", timeout=30000)
 
             if response is None:
                 return self._make_error_result("No response received", url)
@@ -124,6 +180,16 @@ class FlipkartScraper(BaseScraper):
                     raw_text="404 Not Found",
                     http_status=404,
                     error="URL broken/404",
+                    user_facing_error="Invalid/broken URL",
+                )
+
+            if http_status in (403, 405, 429):
+                return StockResult(
+                    status=STATUS_ERROR,
+                    raw_text=f"HTTP {http_status}",
+                    http_status=http_status,
+                    error=f"HTTP error {http_status}",
+                    user_facing_error="Page unavailable",
                 )
 
             if http_status >= 400:
@@ -132,13 +198,14 @@ class FlipkartScraper(BaseScraper):
                     raw_text=f"HTTP {http_status}",
                     http_status=http_status,
                     error=f"HTTP error {http_status}",
+                    user_facing_error="Page unavailable",
                 )
 
             await random_delay(1.5, 3.0)
 
             # Close login popup if it appears
             try:
-                close_btn = self._page.locator("button._2KpZ6l._2doB4z, button[class*='close']").first
+                close_btn = page.locator("button._2KpZ6l._2doB4z, button[class*='close']").first
                 if await close_btn.is_visible(timeout=2000):
                     await close_btn.click()
                     await random_delay(0.5, 1.0)
@@ -146,15 +213,26 @@ class FlipkartScraper(BaseScraper):
                 pass
 
             # Enter pincode for delivery check
-            await self._enter_pincode(self._page)
+            await self._enter_pincode(page)
 
-            page_title = await self._page.title()
-            page_text = await self._page.text_content("body") or ""
+            page_title = await page.title()
+            page_text = await page.text_content("body") or ""
             page_text_lower = page_text.lower()
+
+            # Extract all scrapeable fields
+            scraped_fields = {}
+
+            price = await self._extract_price(page)
+            if price:
+                scraped_fields["price"] = price
+
+            product_name = await self._extract_product_name(page)
+            if product_name:
+                scraped_fields["product_name"] = product_name
 
             # Check for "Currently Unavailable" — clear OOS indicator on Flipkart
             # TODO: Update selectors
-            unavailable = self._page.locator(
+            unavailable = page.locator(
                 ":text('Currently Unavailable'), :text('currently unavailable'), "
                 ":text('Sold Out'), :text('Coming Soon'), "
                 "[class*='not-available'], [class*='sold-out']"
@@ -163,15 +241,17 @@ class FlipkartScraper(BaseScraper):
                 first_el = unavailable.first
                 if await first_el.is_visible(timeout=2000):
                     raw = await first_el.text_content() or "Currently Unavailable"
+                    scraped_fields["stock_status"] = STATUS_OUT_OF_STOCK
                     return StockResult(
                         status=STATUS_OUT_OF_STOCK,
                         raw_text=raw.strip(),
                         http_status=http_status,
                         page_title=page_title,
+                        scraped_fields=scraped_fields,
                     )
 
             # Check for "Add to Cart" / "Buy Now" (in stock)
-            add_to_cart = self._page.locator(
+            add_to_cart = page.locator(
                 "button:has-text('Add to Cart'), button:has-text('ADD TO CART'), "
                 "button:has-text('Buy Now'), button:has-text('BUY NOW'), "
                 "[class*='add-to-cart'], [class*='buy-now']"
@@ -180,28 +260,34 @@ class FlipkartScraper(BaseScraper):
                 first_btn = add_to_cart.first
                 if await first_btn.is_visible(timeout=2000):
                     raw = await first_btn.text_content() or "Add to Cart"
+                    scraped_fields["stock_status"] = STATUS_IN_STOCK
                     return StockResult(
                         status=STATUS_IN_STOCK,
                         raw_text=raw.strip(),
                         http_status=http_status,
                         page_title=page_title,
+                        scraped_fields=scraped_fields,
                     )
 
             # Fallback: text-based detection
             if "currently unavailable" in page_text_lower or "sold out" in page_text_lower:
+                scraped_fields["stock_status"] = STATUS_OUT_OF_STOCK
                 return StockResult(
                     status=STATUS_OUT_OF_STOCK,
                     raw_text="OOS keyword detected in page text",
                     http_status=http_status,
                     page_title=page_title,
+                    scraped_fields=scraped_fields,
                 )
 
             if "add to cart" in page_text_lower or "buy now" in page_text_lower:
+                scraped_fields["stock_status"] = STATUS_IN_STOCK
                 return StockResult(
                     status=STATUS_IN_STOCK,
                     raw_text="Add to Cart keyword detected",
                     http_status=http_status,
                     page_title=page_title,
+                    scraped_fields=scraped_fields,
                 )
 
             return StockResult(
@@ -210,18 +296,23 @@ class FlipkartScraper(BaseScraper):
                 http_status=http_status,
                 page_title=page_title,
                 error="Could not determine stock status — selectors may need calibration",
+                user_facing_error="Page unavailable",
+                scraped_fields=scraped_fields,
             )
 
         except asyncio.TimeoutError:
             return self._make_error_result("Page load timed out", url)
         except Exception as e:
             return self._make_error_result(f"Unexpected error: {str(e)}", url)
+        finally:
+            try:
+                await page.close()
+            except Exception:
+                pass
 
     async def cleanup(self) -> None:
         """Close browser and Playwright instance."""
         try:
-            if self._page:
-                await self._page.close()
             if self._context:
                 await self._context.close()
             if self._browser:
@@ -232,7 +323,6 @@ class FlipkartScraper(BaseScraper):
         except Exception as e:
             self.logger.warning(f"Cleanup error: {e}")
         finally:
-            self._page = None
             self._context = None
             self._browser = None
             self._playwright = None

@@ -4,15 +4,19 @@ Generic Scraper — Fallback adapter for platforms without a dedicated scraper.
 This scraper attempts basic stock detection by loading the page and searching
 for common stock-related keywords. It will work for some simpler sites but
 is not reliable for JS-heavy platforms with anti-bot protection.
+
+Extracts stock status via keyword matching; price/product name extraction
+is best-effort via common HTML patterns.
 """
 
 import asyncio
+import re
 from playwright.async_api import async_playwright, Page, BrowserContext, Browser
 
-from scrapers.base import BaseScraper, StockResult
+from scrapers.base import BaseScraper, StockResult, classify_user_facing_error
 from platform_config import STATUS_IN_STOCK, STATUS_OUT_OF_STOCK, STATUS_NOT_AVAILABLE, STATUS_ERROR
 from utils import (
-    get_random_user_agent,
+    get_rotating_user_agent,
     get_stealth_browser_args,
     get_stealth_context_options,
     apply_stealth_scripts,
@@ -39,7 +43,6 @@ class GenericScraper(BaseScraper):
         self._playwright = None
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
-        self._page: Page | None = None
 
     async def initialize(self, location_value=None) -> None:
         """Launch browser. Generic scraper doesn't handle location setting."""
@@ -51,12 +54,9 @@ class GenericScraper(BaseScraper):
             args=get_stealth_browser_args(),
         )
 
-        ua = get_random_user_agent()
+        ua = get_rotating_user_agent()
         context_opts = get_stealth_context_options(ua)
         self._context = await self._browser.new_context(**context_opts)
-        self._page = await self._context.new_page()
-
-        await apply_stealth_scripts(self._page)
 
         # Block heavy resources
         await self._context.route(
@@ -67,15 +67,46 @@ class GenericScraper(BaseScraper):
         self._initialized = True
         self.logger.info("Generic scraper initialized")
 
+    async def _extract_price(self, page: Page) -> str | None:
+        """Best-effort price extraction via common patterns."""
+        try:
+            page_text = await page.text_content("body") or ""
+            price_match = re.search(r'₹\s*[\d,]+(?:\.\d{1,2})?', page_text)
+            if price_match:
+                return price_match.group(0).strip()
+        except Exception:
+            pass
+        return None
+
+    async def _extract_product_name(self, page: Page) -> str | None:
+        """Best-effort product name extraction via h1 tag."""
+        try:
+            el = page.locator("h1").first
+            if await el.is_visible(timeout=2000):
+                text = await el.text_content()
+                if text and len(text.strip()) > 2:
+                    return text.strip()
+        except Exception:
+            pass
+        return None
+
     async def check_stock(self, url: str) -> StockResult:
         """
         Visit a product page and attempt keyword-based stock detection.
+        Also extracts price and product name on a best-effort basis.
         """
-        if not self._initialized or not self._page:
+        if not self._initialized or not self._context:
             return self._make_error_result("Scraper not initialized", url)
 
+        # Create a fresh page per request
+        page = await self._context.new_page()
         try:
-            response = await self._page.goto(url, wait_until="domcontentloaded", timeout=30000)
+            # Rotate UA per request
+            ua = get_rotating_user_agent()
+            await page.set_extra_http_headers({"User-Agent": ua})
+            await apply_stealth_scripts(page)
+
+            response = await page.goto(url, wait_until="domcontentloaded", timeout=30000)
 
             if response is None:
                 return self._make_error_result("No response received", url)
@@ -88,6 +119,16 @@ class GenericScraper(BaseScraper):
                     raw_text="404 Not Found",
                     http_status=404,
                     error="URL broken/404",
+                    user_facing_error="Invalid/broken URL",
+                )
+
+            if http_status in (403, 405, 429):
+                return StockResult(
+                    status=STATUS_ERROR,
+                    raw_text=f"HTTP {http_status}",
+                    http_status=http_status,
+                    error=f"HTTP error {http_status}",
+                    user_facing_error="Page unavailable",
                 )
 
             if http_status >= 400:
@@ -96,32 +137,48 @@ class GenericScraper(BaseScraper):
                     raw_text=f"HTTP {http_status}",
                     http_status=http_status,
                     error=f"HTTP error {http_status}",
+                    user_facing_error="Page unavailable",
                 )
 
             await random_delay(2.0, 4.0)
 
-            page_title = await self._page.title()
-            page_text = await self._page.text_content("body") or ""
+            page_title = await page.title()
+            page_text = await page.text_content("body") or ""
             page_text_lower = page_text.lower()
+
+            # Extract all scrapeable fields
+            scraped_fields = {}
+
+            price = await self._extract_price(page)
+            if price:
+                scraped_fields["price"] = price
+
+            product_name = await self._extract_product_name(page)
+            if product_name:
+                scraped_fields["product_name"] = product_name
 
             # Check OOS keywords first (higher priority — if OOS is shown, it's OOS)
             for kw in OOS_KEYWORDS:
                 if kw in page_text_lower:
+                    scraped_fields["stock_status"] = STATUS_OUT_OF_STOCK
                     return StockResult(
                         status=STATUS_OUT_OF_STOCK,
                         raw_text=f"Keyword match: '{kw}'",
                         http_status=http_status,
                         page_title=page_title,
+                        scraped_fields=scraped_fields,
                     )
 
             # Check in-stock keywords
             for kw in IN_STOCK_KEYWORDS:
                 if kw in page_text_lower:
+                    scraped_fields["stock_status"] = STATUS_IN_STOCK
                     return StockResult(
                         status=STATUS_IN_STOCK,
                         raw_text=f"Keyword match: '{kw}'",
                         http_status=http_status,
                         page_title=page_title,
+                        scraped_fields=scraped_fields,
                     )
 
             return StockResult(
@@ -130,18 +187,23 @@ class GenericScraper(BaseScraper):
                 http_status=http_status,
                 page_title=page_title,
                 error="No dedicated scraper for this platform — keyword detection inconclusive",
+                user_facing_error="Page unavailable",
+                scraped_fields=scraped_fields,
             )
 
         except asyncio.TimeoutError:
             return self._make_error_result("Page load timed out", url)
         except Exception as e:
             return self._make_error_result(f"Unexpected error: {str(e)}", url)
+        finally:
+            try:
+                await page.close()
+            except Exception:
+                pass
 
     async def cleanup(self) -> None:
         """Close browser and Playwright instance."""
         try:
-            if self._page:
-                await self._page.close()
             if self._context:
                 await self._context.close()
             if self._browser:
@@ -152,7 +214,6 @@ class GenericScraper(BaseScraper):
         except Exception as e:
             self.logger.warning(f"Cleanup error: {e}")
         finally:
-            self._page = None
             self._context = None
             self._browser = None
             self._playwright = None

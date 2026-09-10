@@ -1,0 +1,17 @@
+2026-09-09 15:48:11 [INFO] osa_qc.engine: Starting QC for 20 rows on blinkit (concurrency=3)
+2026-09-09 15:48:13 [INFO] osa_qc.engine: Processing in 1 batch(es) of up to 50 rows each
+2026-09-09 15:48:13 [INFO] osa_qc.engine: Starting batch 1/1 (20 rows)
+2026-09-09 15:48:16 [INFO] osa_qc.engine: Starting QC for 20 rows on blinkit (concurrency=3)
+2026-09-09 15:48:17 [INFO] osa_qc.engine: Processing in 1 batch(es) of up to 50 rows each
+2026-09-09 15:48:17 [INFO] osa_qc.engine: Starting batch 1/1 (20 rows)
+2026-09-09 15:48:36 [WARNING] osa_qc.engine: Retry 1/3 for https://pharmeasy.in/online-medicine-order/-181526 in 3.9s (HTTP None)
+2026-09-09 15:50:40 [INFO] osa_qc.engine: Starting QC for 20 rows on blinkit (concurrency=3)
+2026-09-09 15:50:41 [INFO] osa_qc.engine: Processing in 1 batch(es) of up to 50 rows each
+2026-09-09 15:50:41 [INFO] osa_qc.engine: Starting batch 1/1 (20 rows)
+2026-09-09 15:51:37 [WARNING] osa_qc.engine: Retry 1/3 for https://pharmeasy.in/online-medicine-order/-3028014 in 6.7s (HTTP 405)
+2026-09-09 15:51:40 [WARNING] osa_qc.engine: Retry 1/3 for https://pharmeasy.in/health-care/products/horlicks-protein-plus-vanilla-flavour-powder-400gm-227611 in 7.8s (HTTP 405)
+2026-09-09 15:51:42 [WARNING] osa_qc.engine: Retry 1/3 for https://pharmeasy.in/online-medicine-order/-221918 in 7.8s (HTTP 405)
+2026-09-09 15:51:45 [WARNING] osa_qc.engine: Retry 2/3 for https://pharmeasy.in/online-medicine-order/-3028014 in 13.0s (HTTP 405)
+2026-09-09 15:51:48 [WARNING] osa_qc.engine: Retry 2/3 for https://pharmeasy.in/health-care/products/horlicks-protein-plus-vanilla-flavour-powder-400gm-227611 in 12.8s (HTTP 405)
+2026-09-09 15:51:52 [WARNING] osa_qc.engine: Retry 2/3 for https://pharmeasy.in/online-medicine-order/-221918 in 12.2s (HTTP 405)
+2026-09-09 15:52:09 [INFO] osa_qc.engine: QC complete: 4 mismatches out of 20 rows
