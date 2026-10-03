@@ -23,6 +23,8 @@ STATUS_ERROR = "Error"
 STATUS_SYNONYMS = {
     # In Stock variants
     "in stock": STATUS_IN_STOCK,
+    "instock": STATUS_IN_STOCK,
+    "in-stock": STATUS_IN_STOCK,
     "is": STATUS_IN_STOCK,
     "in_stock": STATUS_IN_STOCK,
     "available": STATUS_IN_STOCK,
@@ -33,11 +35,14 @@ STATUS_SYNONYMS = {
     "out of stock": STATUS_OUT_OF_STOCK,
     "oos": STATUS_OUT_OF_STOCK,
     "out_of_stock": STATUS_OUT_OF_STOCK,
+    "outofstock": STATUS_OUT_OF_STOCK,
+    "out-of-stock": STATUS_OUT_OF_STOCK,
     "unavailable": STATUS_OUT_OF_STOCK,
     "currently unavailable": STATUS_OUT_OF_STOCK,
     "sold out": STATUS_OUT_OF_STOCK,
     "notify me": STATUS_OUT_OF_STOCK,
     "not available": STATUS_OUT_OF_STOCK,
+    "not_available": STATUS_OUT_OF_STOCK,
 }
 
 
@@ -125,14 +130,300 @@ PLATFORM_CONFIG = {
         "base_url": "https://www.1mg.com",
     },
 
-    # --- Add more platforms below ---
-    # "zepto": { ... },
-    # "bigbasket": { ... },
-    # "instamart": { ... },
-    # "amazon": { ... },
-    # "jiomart": { ... },
-    # "netmeds": { ... },
+    "amazon": {
+        "table_name": "amazon",
+        "display_name": "Amazon",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "pdp_title_value",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "price_sp": "price",
+            "pdp_title_value": "product_name",
+        },
+        "scraper_module": "scrapers.amazon",
+        "scraper_class": "AmazonScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.amazon.in",
+    },
+
+    "amazon_now": {
+        # Amazon Now uses the SAME amazon.in product URLs as regular Amazon,
+        # but the scraper reads the quick-commerce / instant-delivery section
+        # of the page (NOT the standard Add-to-Cart / #availability block).
+        "table_name": "amazon_now",
+        "display_name": "Amazon Now",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",     # Same URL column as regular Amazon
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "pdp_title_value",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "price_sp": "price",
+            "pdp_title_value": "product_name",
+        },
+        "scraper_module": "scrapers.amazon_now",
+        "scraper_class": "AmazonNowScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.amazon.in",   # Same base URL — different page section
+    },
+
+    "zepto": {
+        "table_name": "zepto",
+        "display_name": "Zepto",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.zepto",
+        "scraper_class": "ZeptoScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.zeptonow.com",
+    },
+
+    "instamart": {
+        "table_name": "instamart",
+        "display_name": "Instamart",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.instamart",
+        "scraper_class": "InstamartScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.swiggy.com/instamart",
+    },
+
+    "pharmeasy": {
+        "table_name": "pharmeasy",
+        "display_name": "PharmEasy",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.pharmeasy",
+        "scraper_class": "PharmeasyScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://pharmeasy.in",
+    },
+
+    "apollo247": {
+        "table_name": "apollo247",
+        "display_name": "Apollo 247",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.apollo247",
+        "scraper_class": "Apollo247Scraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.apollo247.com",
+    },
+
+    "bigbasket": {
+        "table_name": "bigbasket",
+        "display_name": "BigBasket",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.bigbasket",
+        "scraper_class": "BigbasketScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.bigbasket.com",
+    },
+
+    "flipkart_minutes": {
+        "table_name": "flipkart_minutes",
+        "display_name": "Flipkart Minutes",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.flipkart_minutes",
+        "scraper_class": "FlipkartMinutesScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.flipkart.com",
+    },
+
+    "firstcry": {
+        "table_name": "firstcry",
+        "display_name": "First Cry",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.firstcry",
+        "scraper_class": "FirstcryScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.firstcry.com",
+    },
+
+    "netmeds": {
+        "table_name": "netmeds",
+        "display_name": "Netmeds",
+        "columns": {
+            "sku_id": "web_pid",
+            "product_url": "pdp_page_url",
+            "location_id": "location_id",
+            "osa_remark": "osa_remark",
+            "product_name": "product_name",
+        },
+        "field_mapping": {
+            "osa_remark": "stock_status",
+            "mrp": "price",
+            "product_name": "product_name",
+        },
+        "scraper_module": "scrapers.netmeds",
+        "scraper_class": "NetmedsScraper",
+        "location_type": "pincode",
+        "location_mapping": {
+            "Delhi": "110001",
+            "Mumbai": "400001",
+            "Bangalore": "560001",
+            "Hyderabad": "500001",
+            "Chennai": "600001",
+            "Kolkata": "700001",
+        },
+        "base_url": "https://www.netmeds.com",
+    },
 }
+
 
 
 def get_platform_names() -> list[str]:

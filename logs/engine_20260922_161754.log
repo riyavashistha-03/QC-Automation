@@ -1,0 +1,4 @@
+2026-09-22 16:20:55 [INFO] osa_qc.engine: Starting QC for 16 rows on blinkit (concurrency=3)
+2026-09-22 16:20:58 [INFO] osa_qc.engine: Processing in 1 batch(es) of up to 50 rows each
+2026-09-22 16:20:58 [INFO] osa_qc.engine: Starting batch 1/1 (16 rows)
+2026-09-22 16:21:37 [INFO] osa_qc.engine: QC complete: 16 mismatches out of 16 rows

@@ -282,8 +282,16 @@ async def _run_qc_async(
 
     url_col = col_map.get("product_url", "pdp_page_url")
     osa_col = col_map.get("osa_remark", "osa_remark")
-    sku_col = col_map.get("sku_id", "sku_id")
-    loc_col = col_map.get("location_id", "location_id")
+
+    # Resolve SKU ID column: prefer actual Excel columns sku_id / item_id,
+    # then fall back to whatever the platform config says (e.g. 'fsn', 'web_pid').
+    _sku_candidates = ["sku_id", "item_id", col_map.get("sku_id", "sku_id")]
+    sku_col = next((c for c in _sku_candidates if c in df.columns), _sku_candidates[-1])
+
+    # Resolve Location column: prefer 'pincode' (the actual Excel column),
+    # then fall back to the platform-configured location column.
+    _loc_candidates = ["pincode", col_map.get("location_id", "location_id")]
+    loc_col = next((c for c in _loc_candidates if c in df.columns), _loc_candidates[-1])
 
     for needed_col, actual_col in [(url_col, "product_url"), (osa_col, "osa_remark")]:
         if needed_col not in df.columns:

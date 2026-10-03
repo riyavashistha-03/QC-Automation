@@ -37,6 +37,9 @@ def parse_upload(
     attached as metadata so the engine knows which column holds the URL,
     SKU ID, etc.
 
+    If the first row doesn't look like column headers (e.g. contains numeric
+    values or URLs), the parser will try rows 1-10 to auto-detect the header.
+
     Args:
         uploaded_file: Streamlit UploadedFile or file-like object
         platform: Platform key to apply column mapping
@@ -46,8 +49,33 @@ def parse_upload(
         pd.DataFrame with column_mapping and platform in attrs
     """
     try:
+        # First pass — assume headers on row 0
         df = pd.read_excel(uploaded_file, sheet_name=sheet_name, engine="openpyxl")
         logger.info(f"Parsed upload: {len(df)} rows, columns: {list(df.columns)}")
+
+        # Auto-detect header row: if columns look like data values instead of
+        # header names, scan rows 1-10 to find the real header row.
+        if _columns_look_like_data(df.columns):
+            logger.warning(
+                "First row appears to be data, not headers. "
+                "Scanning for the real header row..."
+            )
+            uploaded_file.seek(0)  # Reset file pointer
+            header_row = _find_header_row(uploaded_file, sheet_name, platform)
+            if header_row is not None:
+                uploaded_file.seek(0)
+                df = pd.read_excel(
+                    uploaded_file,
+                    sheet_name=sheet_name,
+                    header=header_row,
+                    engine="openpyxl",
+                )
+                logger.info(
+                    f"Re-parsed with header on row {header_row}: "
+                    f"{len(df)} rows, columns: {list(df.columns)}"
+                )
+            else:
+                logger.warning("Could not auto-detect header row, proceeding as-is.")
 
         col_map = get_column_mapping(platform)
         df.attrs["column_mapping"] = col_map
@@ -67,6 +95,76 @@ def parse_upload(
     except Exception as e:
         logger.error(f"Failed to parse uploaded file: {e}")
         raise ValueError(f"Could not read the uploaded file: {e}")
+
+
+def _columns_look_like_data(columns) -> bool:
+    """
+    Heuristic check: do the column labels look like data values
+    rather than header names?
+
+    Returns True if most columns are numeric, contain URLs, or look
+    like product data (long strings, backslash-N patterns, etc.).
+    """
+    data_like_count = 0
+    for col in columns:
+        col_str = str(col)
+        # Numeric columns (integers, floats)
+        try:
+            float(col_str)
+            data_like_count += 1
+            continue
+        except (ValueError, TypeError):
+            pass
+        # URLs
+        if col_str.startswith("http://") or col_str.startswith("https://"):
+            data_like_count += 1
+            continue
+        # \\N or NULL-like values
+        if col_str in ("\\N", "NULL", "None", "nan", "NaN"):
+            data_like_count += 1
+            continue
+
+    # If more than 30% of columns look like data, headers are probably wrong
+    return len(columns) > 0 and (data_like_count / len(columns)) > 0.3
+
+
+def _find_header_row(
+    uploaded_file,
+    sheet_name: str | int,
+    platform: str,
+    max_scan_rows: int = 10,
+) -> int | None:
+    """
+    Scan the first few rows of the Excel file to find the row
+    that best matches expected column names for the platform.
+    """
+    col_map = get_column_mapping(platform)
+    expected_cols = set(col_map.values())
+
+    for row_idx in range(max_scan_rows):
+        try:
+            uploaded_file.seek(0)
+            df_test = pd.read_excel(
+                uploaded_file,
+                sheet_name=sheet_name,
+                header=row_idx,
+                nrows=1,
+                engine="openpyxl",
+            )
+            actual_cols = set(str(c) for c in df_test.columns)
+            # Check how many expected columns are present
+            matches = expected_cols & actual_cols
+            if len(matches) >= 2:  # At least 2 expected columns found
+                logger.info(
+                    f"Found header row at index {row_idx} "
+                    f"(matched columns: {matches})"
+                )
+                return row_idx
+        except Exception:
+            continue
+
+    return None
+
 
 
 def get_sheet_names(uploaded_file) -> list[str]:

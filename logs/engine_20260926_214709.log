@@ -1,0 +1,20 @@
+2026-09-26 21:47:30 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon_now (concurrency=3)
+2026-09-26 21:47:30 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:47:40 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:47:40 [INFO] osa_qc.engine: Starting batch 1/3 (50 rows)
+2026-09-26 21:51:29 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon_now (concurrency=3)
+2026-09-26 21:51:29 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:51:40 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:51:40 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon_now (concurrency=3)
+2026-09-26 21:51:40 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:51:49 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:51:49 [INFO] osa_qc.engine: Starting batch 1/3 (50 rows)
+2026-09-26 21:56:00 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon_now (concurrency=3)
+2026-09-26 21:56:00 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:56:10 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:56:37 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon_now (concurrency=3)
+2026-09-26 21:56:37 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:56:47 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:56:47 [INFO] osa_qc.engine: Starting batch 1/3 (50 rows)
+2026-09-26 22:04:09 [INFO] osa_qc.engine: Batch 1 complete. Pausing before next batch...
+2026-09-26 22:04:18 [INFO] osa_qc.engine: Starting batch 2/3 (50 rows)

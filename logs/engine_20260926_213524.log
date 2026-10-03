@@ -1,0 +1,4 @@
+2026-09-26 21:37:05 [INFO] osa_qc.engine: Starting QC for 104 rows on amazon (concurrency=3)
+2026-09-26 21:37:05 [INFO] osa_qc.engine: Large file detected (104 rows), capping concurrency to 2 workers
+2026-09-26 21:37:27 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-09-26 21:37:27 [INFO] osa_qc.engine: Starting batch 1/3 (50 rows)

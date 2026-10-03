@@ -1,0 +1,24 @@
+2026-10-03 22:48:23 [INFO] osa_qc.engine: Starting QC for 139 rows on flipkart (concurrency=3)
+2026-10-03 22:48:23 [INFO] osa_qc.engine: Large file detected (139 rows), capping concurrency to 2 workers
+2026-10-03 22:48:27 [INFO] osa_qc.engine: Processing in 3 batch(es) of up to 50 rows each
+2026-10-03 22:48:27 [INFO] osa_qc.engine: Starting batch 1/3 (50 rows)
+2026-10-03 22:50:14 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMHCDYFD3CCW3QV in 5.0s (HTTP 200)
+2026-10-03 22:50:23 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMHCDYFD3CCW3QV in 7.7s (HTTP 200)
+2026-10-03 22:51:00 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMH25KKBCHFBQKN in 4.8s (HTTP 200)
+2026-10-03 22:51:09 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMH25KKBCHFBQKN in 6.9s (HTTP 200)
+2026-10-03 22:51:16 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/xyz?pid=PSLEP325WX5RFFHJ in 3.2s (HTTP 200)
+2026-10-03 22:51:25 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/xyz?pid=PSLEP325WX5RFFHJ in 6.4s (HTTP 200)
+2026-10-03 22:52:50 [INFO] osa_qc.engine: Starting QC for 30 rows on flipkart (concurrency=3)
+2026-10-03 22:52:53 [INFO] osa_qc.engine: Processing in 1 batch(es) of up to 50 rows each
+2026-10-03 22:52:53 [INFO] osa_qc.engine: Starting batch 1/1 (30 rows)
+2026-10-03 22:53:10 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMHZPGDKVPXYJN4 in 3.9s (HTTP 200)
+2026-10-03 22:53:19 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMHZPGDKVPXYJN4 in 7.0s (HTTP 200)
+2026-10-03 22:53:19 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/xyz?pid=PSLEP325WX5RFFHJ in 4.2s (HTTP 200)
+2026-10-03 22:53:41 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/xyz?pid=PSLEP325WX5RFFHJ in 7.0s (HTTP 200)
+2026-10-03 22:54:33 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMG3TZBY2FRGJMH in 4.2s (HTTP 200)
+2026-10-03 22:54:45 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMG3TZBY2FRGJMH in 7.0s (HTTP 200)
+2026-10-03 22:54:51 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMGYYDMA4DG2G5D in 4.6s (HTTP 200)
+2026-10-03 22:55:00 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=MDMGYYDMA4DG2G5D in 7.0s (HTTP 200)
+2026-10-03 22:55:21 [WARNING] osa_qc.engine: Retry 1/3 for https://flipkart.com/abc/p/itmxyz?pid=BBYH5VRHKBZZEAJN in 4.2s (HTTP 200)
+2026-10-03 22:55:35 [WARNING] osa_qc.engine: Retry 2/3 for https://flipkart.com/abc/p/itmxyz?pid=BBYH5VRHKBZZEAJN in 7.7s (HTTP 200)
+2026-10-03 22:55:52 [INFO] osa_qc.engine: QC complete: 26 mismatches out of 30 rows

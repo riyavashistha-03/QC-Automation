@@ -1,0 +1,357 @@
+{
+  "productDetails": {
+    "isComboAvailable": false,
+    "isCosmetic": false,
+    "children": [
+      {
+        "base_img_url": "https://www.bbassets.com/media/uploads",
+        "visibility": null,
+        "id": "40097876",
+        "external_entity": null,
+        "inv_info": null,
+        "desc": "Gold Follow Up Infant Formula Powder - After 12 Months Onwards, Stage 3",
+        "pack_desc": "Bag-In-Box",
+        "w": "400 g",
+        "additional_info": {
+          "key_highlights": [],
+          "assurance_widget": [],
+          "per_unit_pd_page": true,
+          "per_unit_listing_page": true
+        },
+        "absolute_url": "/pd/40097876/aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards-400-g-bag-in-box-pack/",
+        "usp": "",
+        "cart_count": 0,
+        "aplus_url": "/media/uploads/groot/html/aptamil-stage-3-07-07-2021.html",
+        "images": [
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876_12-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876_12-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876_12-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876_12-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876_12-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-2_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-2_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-2_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-2_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-2_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-3_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-3_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-3_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-3_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-3_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-4_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-4_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-4_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-4_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-4_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-5_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-5_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-5_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-5_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-5_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-6_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-6_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-6_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-6_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-6_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-7_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-7_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-7_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-7_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-7_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-8_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-8_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-8_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-8_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-8_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          },
+          {
+            "s": "https://www.bbassets.com/media/uploads/p/s/40097876-9_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "m": "https://www.bbassets.com/media/uploads/p/m/40097876-9_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "l": "https://www.bbassets.com/media/uploads/p/l/40097876-9_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xl": "https://www.bbassets.com/media/uploads/p/xl/40097876-9_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg",
+            "xxl": "https://www.bbassets.com/media/uploads/p/xxl/40097876-9_2-aptamil-follow-up-infant-formula-powder-stage-3-from-12-months-onwards.jpg"
+          }
+        ],
+        "variable_weight": null,
+        "brand": {
+          "name": "Aptamil",
+          "slug": "aptamil",
+          "url": "/pb/aptamil/"
+        },
+        "category": {
+          "tlc_name": "Baby Care",
+          "tlc_slug": "baby-care",
+          "llc_name": "Infant Formula",
+          "llc_slug": "type=pc&slug=infant-formula",
+          "llc_id": 761
+        },
+        "additional_attr": {
+          "bby_lod": null,
+          "info": [
+            {
+              "id": null,
+              "type": "food_type",
+              "sub_type": "veg",
+              "position": null,
+              "image_url": null,
+              "label": "veg"
+            }
+          ]
+        },
+        "tabs": [
+          {
+            "content": "<style type=\"text/css\"> @import url(\"https://www.bbassets.com/static/froala_style_v2.min.css\"); </style>\n        <div style=\"font-family: 'ProximaNova-Regular';font-size:13px;line-height: 18px;color:8f8f8f;\">\n            <p>Aptamil Stage 3 Follow up formula contains balanced, age-appropriate nutrients which support the overall growth and development of the baby. Formulated with the optimized blend of DHA &amp; ARA to support brain development and visual acuity. It is a powdered milk substitute for babies from 12 months onwards of age when a mother\u2019s milk is insufficient or unavailable. It contains Nucleotides, Zinc, Selenium, Vit A, C, D, E and Beta Carotene to support Immune system development. The optimized blend of DHA and ARA, Iron, Iodine, Folic acid, Choline and Taurine support brain and visual function. Whey Casein ratio 60:40, 100% lactose supports digestive health. Protein, Calcium, Phosphorus, Vitamin D and K support physical growth. For over 100 years Nutricia has been at the forefront of innovation in infant nutrition, Nutricia family firmly believes that breast milk is the best for infants.</p>\n        </div>",
+            "title": "About the Product"
+          },
+          {
+            "content": "<style type=\"text/css\"> @import url(\"https://www.bbassets.com/static/froala_style_v2.min.css\"); </style>\n        <div style=\"font-family: 'ProximaNova-Regular';font-size:13px;line-height: 18px;color:8f8f8f;\">\n            <ul><li>Storage Instructions: On opening this pack, the contents along with the laminate pouch should immediately be transferred to an empty, clean, dry and airtight container. Replace the lid tightly after each use and store in a cool dry place. After opening, use the contents within 3 weeks or the expiry date whichever is earlier. The scoop and water measuring cup provided with the cap should be thoroughly washed and dried before use.</li><li>Warning: Careful and hygienic preparation of infant milk substitutes is essential for health. Do not use fewer scoops than directed, since diluted feeding will not provide adequate nutrients needed by your infant. Do not use more scoops than directed, since concentrated feed will not provide the water needed by your infant. Infant milk substitutes are only on the advice of a health worker as to the need for its use and the proper method of its use. Infant milk substitute or infant food is not the sole source of nourishment for an infant. It is important to follow the mentioned feeding and storage instructions while using the infant formula for your baby's well-being.</li><li>Caution: Unboiled water, unsterilized bowls/spoons or incorrect dilution may endanger the infant\u2019s health. Prepare only one feed at a time. Use prepared feed immediately (within half an hour), otherwise, microbial deterioration may set in. Discard unused feed. Always hold the baby while feeding. Leaving the baby unattended may cause choking.</li></ul>\n        </div>",
+            "title": "Care Instruction"
+          },
+          {
+            "content": "<style type=\"text/css\"> @import url(\"https://www.bbassets.com/static/froala_style_v2.min.css\"); </style>\n        <div style=\"font-family: 'ProximaNova-Regular';font-size:13px;line-height: 18px;color:8f8f8f;\">\n            <ol><li>Wash your hands thoroughly before opening the feed.&nbsp;</li><li>Sterilize the feeding bowl and feeding spoon by boiling in water for 10 minutes&nbsp;</li><li>Boil drinking water for 5 minutes and leave it till lukewarm&nbsp;</li><li>Pour the correct amount of lukewarm water as per the feeding table</li><li>Consult feeding table and add into the bowl of exact number of scoops, levelled off according to the age of the infant. Use only the scoop provided with the pack. Stir well till the powder dissolves.</li></ol>\n        </div>",
+            "title": "How to Use"
+          },
+          {
+            "content": "<style type=\"text/css\"> @import url(\"https://www.bbassets.com/static/froala_style_v2.min.css\"); </style>\n        <div style=\"font-family: 'ProximaNova-Regular';font-size:13px;line-height: 18px;color:8f8f8f;\">\n            <p>This product is non-returnable and non-refundable.</p>\n        </div>",
+            "title": "Return Policy"
+          },
+          {
+            "content": "<style type=\"text/css\"> @import url(\"https://www.bbassets.com/static/froala_style_v2.min.css\"); </style>\n        <div style=\"font-family: 'ProximaNova-Regular';font-size:13px;line-height: 18px;color:8f8f8f;\">\n            <p>EAN Code: 40097876 </p><p><br></p><p>FSSAI No: 10015022004574 </p><p><br></p><p>Manufacturer Name and Address: Nutricia International Pvt Ltd at Chandigarh - Ambala Highway, Village Sarsini, PO Lalru, Dist. SAS Nagar, Punjab - 140501, India </p><p><br></p><p>Marketed &amp; Imported by: Nutricia International Pvt Ltd (A Subsidiary of DANONE), Office No. 1, 3rd Floor, The Centrium, Phoenix Market City, LBS Marg, Kurla West, Mumbai, Maharashtra 400070 </p><p><br></p><p>Country of origin: Germany </p><p><br></p><p>Best before 10-03-2027</p><p><br></p><p>Disclaimer: The expiry date shown here is for indicative purposes only. Please refer to the information provided on the product package received at delivery for the actual expiry date</p><p><br></p><p>For Queries/Feedback/Complaints, contact our customer care executive at 1860 123 1000 | Address: Innovative Retail Concepts Private Limited, Ranka Junction 4th Floor, Tin Factory Bus Stop. KR Puram, Bangalore - 560016 Email: customerservice@bigbasket.com</p>\n        </div>",
+            "title": "Other Product Info"
+          }
+        ],
+        "tags": [
+          {
+            "header": "BABY FEEDING STAGE",
+            "values": [
+              {
+                "display_name": "Stage 3",
+                "dest_type": "product_list",
+                "dest_slug": "type=tag&slug=baby-feeding-stage--stage-3",
+                "url": "/ts/827/baby-feeding-stage/stage-3"
+              }
+            ]
+          },
+          {
+            "header": "NON MILK",
+            "values": [
+              {
+                "display_name": "Non Milk",
+                "dest_type": "product_list",
+                "dest_slug": "type=tag&slug=non-milk--non-milk",
+                "url": "/ts/19513/non-milk/non-milk"
+              }
+            ]
+          },
+          {
+            "header": "COUNTRY OF ORIGIN",
+            "values": [
+              {
+                "display_name": "Germany",
+                "dest_type": "product_list",
+                "dest_slug": "type=tag&slug=country-of-origin--germany",
+                "url": "/ts/170/country-of-origin/germany"
+              }
+            ]
+          },
+          {
+            "header": "FOOD PREFERENCE",
+            "values": [
+              {
+                "display_name": "Vegetarian",
+                "dest_type": "product_list",
+                "dest_slug": "type=tag&slug=food-preference--vegetarian",
+                "url": "/ts/787/food-preference/vegetarian"
+              }
+            ]
+          }
+        ],
+        "combo": null,
+        "breadcrumb": [
+          {
+            "id": 1472,
+            "name": "baby care",
+            "slug": "baby-care",
+            "type": "pc",
+            "url": "/cl/baby-care/"
+          },
+          {
+            "id": 1475,
+            "name": "baby food & formula",
+            "slug": "baby-food-formula",
+            "type": "pc",
+            "url": "/pc/baby-care/baby-food-formula/"
+          },
+          {
+            "id": 761,
+            "name": "infant formula",
+            "slug": "infant-formula",
+            "type": "pc",
+            "url": "/pc/baby-care/baby-food-formula/infant-formula/"
+          }
+        ],
+        "rating_info": {
+          "avg_rating": "4.1",
+          "rating_count": 71,
+          "review_count": 1,
+          "sku_id": 40097876
+        },
+        "availability": {
+          "avail_status": "010",
+          "short_eta": null,
+          "medium_eta": null,
+          "long_eta": null,
+          "label": "We are currently not delivering this",
+          "display_mrp": false,
+          "display_sp": false,
+          "not_for_sale": null,
+          "button": "Notify Me",
+          "show_express": null
+        },
+        "is_tobacco": false,
+        "pricing": {
+          "offer": {},
+          "discount": {
+            "mrp": null,
+            "d_text": null,
+            "d_avail": null,
+            "prim_price": {
+              "sp": null,
+              "icon": null,
+              "desc": null,
+              "base_price": null,
+              "base_unit": null
+            },
+            "sec_price": null,
+            "offer_entry_text": null,
+            "offer_available": null
+          },
+          "promo": null
+        },
+        "children": []
+      }
+    ],
+    "base_img_url": "https://www.bbassets.com/media/uploads",
+    "isMember": null,
+    "isError": false,
+    "isTobacco": false,
+    "visibility": {},
+    "external_entity": "",
+    "inv_info": null
+  },
+  "dySectionsData": {
+    "rnrData": {
+      "rating_stats": {
+        "parent_sku_id": 40097876,
+        "category_id": 761,
+        "ratings_count": 72,
+        "reviews_count": 1,
+        "avg_rating": "4.1",
+        "ratings_count_1": 10,
+        "ratings_count_2": 2,
+        "ratings_count_3": 4,
+        "ratings_count_4": 11,
+        "ratings_count_5": 45,
+        "review_images_count": 0,
+        "status": 1,
+        "created_on": "2019-12-03 02:07:40",
+        "updated_on": "2026-09-10 14:39:29"
+      },
+      "feature_stats": null,
+      "top_reviews": [
+        {
+          "review_id": 12709127,
+          "solicitation_id": 1,
+          "rating": 5,
+          "review_title": "",
+          "review_description": "Love aptamil",
+          "parent_sku_id": 40097876,
+          "sku_id": 40097876,
+          "category_id": 761,
+          "city_id": 18,
+          "city_name": "Gurgaon",
+          "likes_count": 2,
+          "flags_count": 0,
+          "likes": [
+            31011953,
+            94180305
+          ],
+          "flags": [],
+          "media_ids": [],
+          "contains_images": false,
+          "member_id": 1,
+          "reviewer_name": "puja",
+          "submitted_on": "2021-02-04T15:56:36+05:30",
+          "published_on": "2021-04-07T15:22:39+05:30",
+          "length_of_review_in_characters": 12,
+          "no_of_images_present": 0,
+          "source": "bigbasket"
+        }
+      ],
+      "image_reviews": [],
+      "reviews_total": 1,
+      "image_reviews_total": 0,
+      "images_total": 0,
+      "sorts": [
+        {
+          "sort_id": 1,
+          "display": "Most Recent",
+          "key": "submitted_on",
+          "order": "desc"
+        },
+        {
+          "sort_id": 2,
+          "display": "Most Helpful",
+          "key": "likes_count",
+          "order": "desc"
+        },
+        {
+          "sort_id": 3,
+          "display": "Positive First",
+          "key": "rating",
+          "order": "desc"
+        },
+        {
+          "sort_id": 4,
+          "display": "Negative First",
+          "key": "rating",
+          "order": "asc"
+        }
+      ]
+    },
+    "seoData": {
+      "deep_link": [
+        "android-app://com.bigbasket.mobileapp/bigbasket/product_detail/?40097876",
+        "ios-app://660683603/bigbasket/product_detail/?40097876"
+      ],
+      "related_search": "",
+      "seo_data": {
+        "meta_description": "",
+        "meta_keywords": "",
+        "seo_additional_fld2": "",
+        "seo_additional_fld1": "",
+        "page_title": "Buy Aptamil Stage 3 Follow Up Formula 400 Gm Online At Best Price"
+      },
+      "httpStatus": "200",
+      "xTracker": "Root=1-6aa3c752-11d18f2b6e8b19f70a77f797"
+    }
+  },
+  "sectionInfo": {
+    "status": "fulfilled"
+  }
+}
